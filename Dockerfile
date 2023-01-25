@@ -52,3 +52,4 @@ RUN source /opt/ros/foxy/setup.bash && \
 
 WORKDIR '/sim_ws'
 ENTRYPOINT ["/bin/bash"]
+RUN echo "alias sros='source /ros_entrypoint.sh && bash'" >> /root/.bashrc
