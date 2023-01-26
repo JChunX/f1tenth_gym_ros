@@ -29,6 +29,7 @@ RUN apt-get update --fix-missing && \
     apt-get install -y git \
                        nano \
                        vim \
+                       gdb \
                        python3-pip \
                        libeigen3-dev \
                        tmux \
@@ -53,3 +54,7 @@ RUN source /opt/ros/foxy/setup.bash && \
 WORKDIR '/sim_ws'
 ENTRYPOINT ["/bin/bash"]
 RUN echo "alias sros='source /ros_entrypoint.sh && bash'" >> /root/.bashrc
+
+# python3 alias
+RUN echo "alias python=python3" >> /root/.bashrc
+RUN echo "alias lup='source install/local_setup.bash'" >> /root/.bashrc
