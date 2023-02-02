@@ -65,9 +65,36 @@ class GymBridge(Node):
         self.declare_parameter('sy1')
         self.declare_parameter('stheta1')
         self.declare_parameter('kb_teleop')
+        
+        # print all parameters
+        rclpy.logging.get_logger('gym_bridge').info('Parameters:')
+        rclpy.logging.get_logger('gym_bridge').info('ego_namespace: {}'.format(self.get_parameter('ego_namespace').value))
+        rclpy.logging.get_logger('gym_bridge').info('ego_odom_topic: {}'.format(self.get_parameter('ego_odom_topic').value))
+        rclpy.logging.get_logger('gym_bridge').info('ego_opp_odom_topic: {}'.format(self.get_parameter('ego_opp_odom_topic').value))
+        rclpy.logging.get_logger('gym_bridge').info('ego_scan_topic: {}'.format(self.get_parameter('ego_scan_topic').value))
+        rclpy.logging.get_logger('gym_bridge').info('ego_drive_topic: {}'.format(self.get_parameter('ego_drive_topic').value))
+        rclpy.logging.get_logger('gym_bridge').info('opp_namespace: {}'.format(self.get_parameter('opp_namespace').value))
+        rclpy.logging.get_logger('gym_bridge').info('opp_odom_topic: {}'.format(self.get_parameter('opp_odom_topic').value))
+        rclpy.logging.get_logger('gym_bridge').info('opp_ego_odom_topic: {}'.format(self.get_parameter('opp_ego_odom_topic').value))
+        rclpy.logging.get_logger('gym_bridge').info('opp_scan_topic: {}'.format(self.get_parameter('opp_scan_topic').value))
+        rclpy.logging.get_logger('gym_bridge').info('opp_drive_topic: {}'.format(self.get_parameter('opp_drive_topic').value))
+        rclpy.logging.get_logger('gym_bridge').info('scan_distance_to_base_link: {}'.format(self.get_parameter('scan_distance_to_base_link').value))
+        rclpy.logging.get_logger('gym_bridge').info('scan_fov: {}'.format(self.get_parameter('scan_fov').value))
+        rclpy.logging.get_logger('gym_bridge').info('scan_beams: {}'.format(self.get_parameter('scan_beams').value))
+        rclpy.logging.get_logger('gym_bridge').info('map_path: {}'.format(self.get_parameter('map_path').value))
+        rclpy.logging.get_logger('gym_bridge').info('map_img_ext: {}'.format(self.get_parameter('map_img_ext').value))
+        rclpy.logging.get_logger('gym_bridge').info('num_agent: {}'.format(self.get_parameter('num_agent').value))
+        rclpy.logging.get_logger('gym_bridge').info('sx: {}'.format(self.get_parameter('sx').value))
+        rclpy.logging.get_logger('gym_bridge').info('sy: {}'.format(self.get_parameter('sy').value))
+        rclpy.logging.get_logger('gym_bridge').info('stheta: {}'.format(self.get_parameter('stheta').value))
+        rclpy.logging.get_logger('gym_bridge').info('sx1: {}'.format(self.get_parameter('sx1').value))
+        rclpy.logging.get_logger('gym_bridge').info('sy1: {}'.format(self.get_parameter('sy1').value))
+        rclpy.logging.get_logger('gym_bridge').info('stheta1: {}'.format(self.get_parameter('stheta1').value))
+        rclpy.logging.get_logger('gym_bridge').info('kb_teleop: {}'.format(self.get_parameter('kb_teleop').value))
 
         # check num_agents
         num_agents = self.get_parameter('num_agent').value
+
         if num_agents < 1 or num_agents > 2:
             raise ValueError('num_agents should be either 1 or 2.')
         elif type(num_agents) != int:
