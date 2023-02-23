@@ -266,7 +266,7 @@ class GymBridge(Node):
         scan.angle_max = self.angle_max
         scan.angle_increment = self.angle_inc
         scan.range_min = 0.
-        scan.range_max = 30.
+        scan.range_max = 60.
         scan.ranges = self.ego_scan
         self.ego_scan_pub.publish(scan)
 
@@ -278,7 +278,7 @@ class GymBridge(Node):
             opp_scan.angle_max = self.angle_max
             opp_scan.angle_increment = self.angle_inc
             opp_scan.range_min = 0.
-            opp_scan.range_max = 30.
+            opp_scan.range_max = 60.
             opp_scan.ranges = self.opp_scan
             self.opp_scan_pub.publish(opp_scan)
 
