@@ -14,7 +14,7 @@ This installation guide will be split into instruction for installing the ROS 2 
 ## Native on Ubuntu 20.04
 
 **Install the following dependencies:**
-- **ROS 2** Follow the instructions [here](https://docs.ros.org/en/foxy/Installation.html) to install ROS 2 Foxy.
+- **ROS 2** Follow the instructions [here](https://docs.ros.org/en/humble/Installation.html) to install ROS 2 humble.
 - **F1TENTH Gym**
   ```bash
   git clone https://github.com/f1tenth/f1tenth_gym
@@ -32,9 +32,9 @@ This installation guide will be split into instruction for installing the ROS 2 
   Go to `sim.yaml` [https://github.com/f1tenth/f1tenth_gym_ros/blob/main/config/sim.yaml](https://github.com/f1tenth/f1tenth_gym_ros/blob/main/config/sim.yaml) in your cloned repo, change the `map_path` parameter to point to the correct location. It should be `'<your_home_dir>/sim_ws/src/f1tenth_gym_ros/maps/levine'`
 - Install dependencies with rosdep:
   ```bash
-  source /opt/ros/foxy/setup.bash
+  source /opt/ros/humble/setup.bash
   cd ..
-  rosdep install -i --from-path src --rosdistro foxy -y
+  rosdep install -i --from-path src --rosdistro humble -y
   ```
 - Build the workspace: ```colcon build```
 
@@ -61,6 +61,7 @@ $ rocker --nvidia --x11 --volume .:/sim_ws/src/f1tenth_gym_ros -- f1tenth_gym_ro
 
 ## Without an NVIDIA gpu:
 
+### Option A: noVNC
 **Install the following dependencies:**
 
 If your system does not support nvidia-docker2, noVNC will have to be used to forward the display.
@@ -80,12 +81,33 @@ docker exec -it f1tenth_gym_ros-sim-1 /bin/bash
 ```
 4. In your browser, navigate to [http://localhost:8080/vnc.html](http://localhost:8080/vnc.html), you should see the noVNC logo with the connect button. Click the connect button to connect to the session.
 
+### Option B: Foxglove Studio
+
+Foxglove Studio can be used in place of RViz to visualize the simulation. In the container, we can start up a Foxglove Websocket server and stream the published data to Foxglove Studio running on the host machine.
+
+**Install the following dependencies:**
+
+- **Foxglove Studio** Follow the instructions [here](https://foxglove.dev/studio) to install Foxglove Studio.
+
+**Installing the simulation:**
+1. Clone this repo
+2. Bringup container:
+```bash
+bash run_docker.sh
+```
+3. Run Foxglove websocket server in the container:
+```bash
+source install/setup.bash
+ros2 launch foxglove_bridge foxglove_bridge_launch.xml
+```
+4. Open Foxglove Studio, choose `Open a new connection -> Foxglove Websocket` with `ws://localhost:8765` as the URL.
+
 # Launching the Simulation
 
 1. `tmux` is included in the contianer, so you can create multiple bash sessions in the same terminal.
 2. To launch the simulation, make sure you source both the ROS2 setup script and the local workspace setup script. Run the following in the bash session from the container:
 ```bash
-$ source /opt/ros/foxy/setup.bash
+$ source /opt/ros/humble/setup.bash
 $ source install/local_setup.bash
 $ ros2 launch f1tenth_gym_ros gym_bridge_launch.py
 ```

@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-FROM ros:foxy
+FROM ros:humble
 
 SHELL ["/bin/bash", "-c"]
 
@@ -32,7 +32,12 @@ RUN apt-get update --fix-missing && \
                        python3-pip \
                        libeigen3-dev \
                        tmux \
-                       ros-foxy-rviz2
+                       libfmt-dev \
+                       librange-v3-dev \
+                       libwebsocketpp-dev \
+                       nlohmann-json3-dev \
+                       ros-humble-rviz2 \
+                       openssh-server
 RUN apt-get -y dist-upgrade
 RUN pip3 install transforms3d
 
@@ -41,14 +46,22 @@ RUN git clone https://github.com/f1tenth/f1tenth_gym
 RUN cd f1tenth_gym && \
     pip3 install -e .
 
+# foxglove bridge
+RUN mkdir -p sim_ws/src/ros-foxglove-bridge
+RUN git clone https://github.com/foxglove/ros-foxglove-bridge /sim_ws/src/ros-foxglove-bridge
+
 # ros2 gym bridge
 RUN mkdir -p sim_ws/src/f1tenth_gym_ros
 COPY . /sim_ws/src/f1tenth_gym_ros
-RUN source /opt/ros/foxy/setup.bash && \
+
+# build
+RUN source /opt/ros/humble/setup.bash && \
     cd sim_ws/ && \
     apt-get update --fix-missing && \
-    rosdep install -i --from-path src --rosdistro foxy -y && \
+    rosdep install -i --from-path src --rosdistro humble -y && \
     colcon build
+
+RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 
 WORKDIR '/sim_ws'
 ENTRYPOINT ["/bin/bash"]
